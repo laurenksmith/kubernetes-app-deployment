@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed-posts
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: seeder
+          image: laurenksmith/sparta-node-app:v1
+          command: ["node", "seeds/seed.js"]
+          env:
+            - name: DB_HOST
+              value: "mongodb://mongo-svc:27017/posts" # matches your Service name

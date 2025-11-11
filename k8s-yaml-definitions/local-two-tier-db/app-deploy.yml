@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sparta-app-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels: { app: sparta-app }
+  template:
+    metadata:
+      labels: { app: sparta-app }
+    spec:
+      containers:
+        - name: sparta-app
+          image: laurenksmith/sparta-node-app:v1
+          ports: [{ containerPort: 3000 }]
+          env:
+            - name: DB_HOST
+              value: "mongodb://mongo-svc:27017/posts"
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 200m
